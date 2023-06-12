@@ -119,7 +119,9 @@ allowedSeq p1
         falls = snd $ break (=~ fallAcc) p1
 
 entstrParse :: String -> DeathCert
-entstrParse es = DeathCert{part1 = p1, part2 = p2}
+entstrParse es 
+    | p1 == [] = DeathCert{part1 = [p2], part2 = []}
+    | otherwise = DeathCert{part1 = p1, part2 = p2}
     where
         esw = words es
         p1con = filter (\c -> head c /= '6') esw
