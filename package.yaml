@@ -24,6 +24,7 @@ dependencies:
 - bytestring
 - cassava
 - regex-tdfa
+- split
 - vector
 
 ghc-options:

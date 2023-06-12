@@ -4,6 +4,7 @@ module Ucrules where
 import Caexprs
 import Data.Csv
 import Data.List
+import Data.List.Split
 import Text.Regex.TDFA
 import GHC.Generics (Generic)
 
@@ -123,7 +124,7 @@ entstrParse es
     | p1 == [] = DeathCert{part1 = [p2], part2 = []}
     | otherwise = DeathCert{part1 = p1, part2 = p2}
     where
-        esw = words es
+        esw = takeWhile (/= ' ') <$> chunksOf 7 es
         p1con = filter (\c -> head c /= '6') esw
         p1 = (fmap $ drop 2) <$> (groupBy (\a b -> head a == head b) p1con)
         p2 = drop 2 <$> filter (\c -> head c == '6') esw
