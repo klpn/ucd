@@ -28,56 +28,98 @@ ucmods = modCa . obvCa
 
 modCa :: (DeathCert, String) -> String
 modCa (dc, tuc)
+    | tuc =~ rhdNos && length chrRhds > 0 = modCa (dc, last chrRhds)
     | tuc == ht && length hhds > 0 = modCa (dc, last hhds)
     | tuc == ht && length hkds > 0 = modCa (dc, last hkds)
     | tuc == ht && length hhkds > 0 = modCa (dc, last hhkds)
-    | tuc == ht && length hfs > 0 = modCa (dc, hhdhf)
-    | tuc == ht && length hdills > 0 = modCa (dc, hhdoth)
+    | tuc == ht && length hfs > 0 = modCa (dc, hhdHf)
+    | tuc == ht && length hdills > 0 = modCa (dc, hhdOth)
     | tuc == ht && length strs > 0 = modCa (dc, last strs)
     | tuc == ht && length nephrs > 0 = modCa (dc, last nephrs)
-    | tuc == ht && length renfs > 0 = modCa (dc, hkdrf)
-    | tuc == ht && length kidcontrs > 0 = modCa (dc, hkdoth)
-    | tuc == hhdhf && length rfalls > 0 = modCa (dc, hhkdhfrf)
-    | tuc == hhdhf && length hkdothkdills > 0 = modCa (dc, hhkdhfoth)
-    | tuc == hhdoth && length rfalls > 0 = modCa (dc, hhkdrfoth)
-    | tuc == hhdoth && length hkdothkdills > 0 = modCa (dc, hhkdoth)
-    | tuc == hkdrf && length hfalls > 0 = modCa (dc, hhkdhfrf)
-    | tuc == hkdrf && length hhdothhdills > 0 = modCa (dc, hhkdrfoth)
-    | tuc == hkdoth && length hfalls > 0 = modCa (dc, hhkdhfoth)
-    | tuc == hkdoth && length hhdothhdills > 0 = modCa (dc, hhkdoth)
+    | tuc == ht && length renfs > 0 = modCa (dc, hkdRf)
+    | tuc == ht && length kidContrs > 0 = modCa (dc, hkdOth)
+    | tuc == hhdHf && length rfAlls > 0 = modCa (dc, hhkdHfRf)
+    | tuc == hhdHf && length hkdOthkdills > 0 = modCa (dc, hhkdHfOth)
+    | tuc == hhdOth && length rfAlls > 0 = modCa (dc, hhkdRfOth)
+    | tuc == hhdOth && length hkdOthkdills > 0 = modCa (dc, hhkdOth)
+    | tuc == hkdRf && length hfAlls > 0 = modCa (dc, hhkdHfRf)
+    | tuc == hkdRf && length hhdOthhdills > 0 = modCa (dc, hhkdRfOth)
+    | tuc == hkdOth && length hfAlls > 0 = modCa (dc, hhkdHfOth)
+    | tuc == hkdOth && length hhdOthhdills > 0 = modCa (dc, hhkdOth)
     | tuc =~ htd && length ihds > 0 = modCa (dc, last ihds)
     | tuc =~ nonmiihd && length mis > 0 = modCa (dc, last mis)
-    | tuc == oldmi = modCa (dc, chrihdoth)
-    | tuc == pulmhdnos && length scols > 0 = modCa (dc, scolhd)
-    | tuc =~ hdfuncill && length ihds > 0 = modCa (dc, last ihds)
+    | tuc == oldmi = modCa (dc, chrihdOth)
+    | tuc == pulmhdNos && length scols > 0 = modCa (dc, scolhd)
+    | tuc =~ hdFuncIll && length ihds > 0 = modCa (dc, last ihds)
+    | tuc =~ stroke && length vdemTucas > 0 = modCa (dc, last vdemTucas)
+    | tuc =~ stroke && length demNosTucas > 0 = modCa (dc, vdemNos)
+    | tuc =~ nonIOcclStr = modCa (dc, ceri ++ (snd $ splitAt 3 tuc))
+    | tuc =~ cerAth && length strSpecs > 0 = modCa (dc, last strSpecs)
+    | tuc =~ cerAth && length pdSecParkTucas > 0 = modCa (dc, vpark)
+    | tuc =~ athero && length htds > 0 = modCa (dc, last htds)
+    | tuc =~ athero && length ihds > 0 = modCa (dc, last ihds)
+    | tuc =~ athero && length hfs > 0 = modCa (dc, last hfs)
+    | tuc =~ athero && length hdills > 0 = modCa (dc, last hdills)
+    | tuc =~ athero && length strs > 0 = modCa (dc, last strs)
+    | tuc =~ athero && length nonrhValvHdTucas > 0 = modCa (dc, last nonrhValvHdTucas)
+    | tuc =~ athero && length hdNosTucas > 0 = modCa (dc, athhd)
+    | tuc =~ athero && length artOthTucas > 0 = modCa (dc, last artOthTucas)
+    | tuc =~ athero && length intvdTucas > 0 = modCa (dc, last intvdTucas)
+    | tuc =~ athero && length cnkidContrTucas > 0 = modCa (dc, hkdOth)
+    | tuc == atheroGen && length gangrNoss > 0 = modCa (dc, atheroExtr)
+    | tuc == atheroGen && length vdemTucas > 0 = modCa (dc, last vdemTucas)
+    | tuc == atheroGen && length demNosTucas > 0 = modCa (dc, vdemNos)
+    | tuc == atheroGen && length pdSecParkTucas > 0 = modCa (dc, vpark)
+    | tuc == taaRup && length aaaRups > 0 = modCa (dc, taaaRup)
+    | tuc == taaNoRup && length aaaNoRups > 0 = modCa (dc, taaaNoRup)
+    | tuc == aaaRup && length taaRups > 0 = modCa (dc, taaaRup)
+    | tuc == aaaNoRup && length taaNoRups > 0 = modCa (dc, taaaNoRup)
     | tuc =~ inj && length exts > 0 = modCa (dc, last exts)
     | otherwise = tuc
     where
         p1 = part1 dc 
         p2 = part2 dc 
         p12 = (concat p1) ++ p2
+        p12tuca = fst $ break (== tuc) p12
+        chrRhds = filter (=~ chrRhd) p12
+        htds = filter (=~ htd) p12
         hhds = filter (=~ hhd) p12
         hkds = filter (=~ hkd) p12
         hhkds = filter (=~ hhkd) p12
         ihds = filter (=~ ihd) p12
         mis = filter (=~ mi) p12
         hfs = filter (=~ hf) p12
-        hdills = filter (=~ hdilldef) p12
+        hdills = filter (=~ hdIllDef) p12
         strs = filter (=~ stroke) p12
+        strSpecs = filter (=~ strokeSpec) p12
         nephrs = filter (=~ nephr) p12
         renfs = filter (=~ renf) p12
-        kidcontrs = filter (== kidcontr) p12
-        hkdrfalls = filter (=~ hkdrfall) p12
-        hkdothalls = filter (=~ hkdothall) p12
-        hkdothkdills = filter (=~ hkdothkdill) p12
-        hhdhfalls = filter (=~ hhdhfall) p12
-        hhdothalls = filter (=~ hhdothall) p12
-        hhdothhdills = filter (=~ hhdothhdill) p12
-        hfalls = filter (=~ hfall) p12
-        hdfuncills = filter (=~ hdfuncill) p12
-        rfalls = filter (=~ rfall) p12
+        kidContrs = filter (== kidContr) p12
+        hkdRfAlls = filter (=~ hkdRfAll) p12
+        hkdOthAlls = filter (=~ hkdOthAll) p12
+        hkdOthkdills = filter (=~ hkdOthkdill) p12
+        hhdHfAlls = filter (=~ hhdHfAll) p12
+        hhdOthAlls = filter (=~ hhdOthAll) p12
+        hhdOthhdills = filter (=~ hhdOthhdill) p12
+        nonrhValvHds = filter (=~ nonrhValvHd) p12
+        hfAlls = filter (=~ hfAll) p12
+        hdFuncIlls = filter (=~ hdFuncIll) p12
+        taaRups = filter (=~ taaRup) p12
+        taaNoRups = filter (=~ taaNoRup) p12
+        aaaRups = filter (=~ aaaRup) p12
+        aaaNoRups = filter (=~ aaaNoRup) p12
+        rfAlls = filter (=~ rfAll) p12
         scols = filter (=~ scol) p12
+        gangrNoss = filter (=~ gangrNos) p12
         exts = filter (=~ ext) p12
+        vdemTucas = filter (=~ vdem) p12tuca
+        demNosTucas = filter (=~ demNos) p12tuca
+        pdSecParkTucas = filter (=~ pdSecPark) p12tuca
+        nonrhValvHdTucas = filter (=~ nonrhValvHd) p12tuca
+        hdNosTucas = filter (=~ hdNos) p12tuca
+        artOthTucas = filter (=~ artOth) p12tuca
+        intvdTucas = filter (=~ intvd) p12tuca
+        cnkidContrTucas = filter (=~ cnkidContr) p12tuca
 
 obvCa :: (DeathCert, String) -> (DeathCert, String)
 obvCa (dc, tuc) 
