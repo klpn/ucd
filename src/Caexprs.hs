@@ -98,3 +98,6 @@ obvConsHiv = intercalate "|" [hivConsA, hivConsB, hivConsNeo, pneum]
 pcNeoCvd = intercalate "|" [chrihd, athero]
 prohibCons = intercalate "|" [pcInfA, pcInfB, pcNeo, flu, pcExt, sarscov] 
 pneumObvCa = intercalate "|" [neurdegnovd, stroke]
+illDef = "I(46[19]|959|99)|J96[09]|P285|R"
+rNonIllDef = "R(572|65[01]|95)"
+nos = "[A-Y][0-9][0-9]9"

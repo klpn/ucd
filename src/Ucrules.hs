@@ -24,7 +24,7 @@ crnew cr = CodRow{sex = sex cr, age = age cr, uc = ucnew, ent = ent cr}
         ucnew = intercalate "|" $ nub [(uc cr), (ucd . entstrParse) (ent cr)]
 
 ucd dc = ucmods (dc, startUcd $ part1 dc)
-ucmods = modCa . obvCa
+ucmods = modCa . illDefCa . obvCa
 
 modCa :: (DeathCert, String) -> String
 modCa (dc, tuc)
@@ -75,6 +75,7 @@ modCa (dc, tuc)
     | tuc == aaaRup && length taaRups > 0 = modCa (dc, taaaRup)
     | tuc == aaaNoRup && length taaNoRups > 0 = modCa (dc, taaaNoRup)
     | tuc =~ inj && length exts > 0 = modCa (dc, last exts)
+    | tuc =~ nos && length tucNonNoss > 0 = modCa (dc, last tucNonNoss)
     | otherwise = tuc
     where
         p1 = part1 dc 
@@ -112,6 +113,7 @@ modCa (dc, tuc)
         scols = filter (=~ scol) p12
         gangrNoss = filter (=~ gangrNos) p12
         exts = filter (=~ ext) p12
+        tucNonNoss = filter (=~ (take 3 tuc ++ "[0-8]")) p12
         vdemTucas = filter (=~ vdem) p12tuca
         demNosTucas = filter (=~ demNos) p12tuca
         pdSecParkTucas = filter (=~ pdSecPark) p12tuca
@@ -120,6 +122,25 @@ modCa (dc, tuc)
         artOthTucas = filter (=~ artOth) p12tuca
         intvdTucas = filter (=~ intvd) p12tuca
         cnkidContrTucas = filter (=~ cnkidContr) p12tuca
+
+illDefCa :: (DeathCert, String) -> (DeathCert, String)
+illDefCa (dc, tuc) 
+    | tuc =~ illDef = obvCa (dc, startUcd $ removeIllDef dc)
+    | otherwise = (dc, tuc)
+
+removeIllDef :: DeathCert -> [[String]]
+removeIllDef dc
+    | length nonIllDefsP1 > 0 = nonIllDefsP1
+    | length nonIllDefsP2 > 0 = [nonIllDefsP2]
+    | otherwise = p1
+    where
+        p1 = part1 dc 
+        p2 = part2 dc 
+        nonIllDefsP1 = filter (/= []) (filter notIllDef <$> p1)
+        nonIllDefsP2 = filter notIllDef p2
+
+notIllDef :: String -> Bool
+notIllDef c = (c =~ rNonIllDef) || (not $ c=~ illDef)
 
 obvCa :: (DeathCert, String) -> (DeathCert, String)
 obvCa (dc, tuc) 

@@ -20,7 +20,7 @@ the script `mortus.awk`. E.g., if the 2020 data file has been unpacked as
 500 records like:
 
 ```
-sed 501q data/VS20MORT.DUSMCPUB_r20220105 | ./mortus.awk | stack exec ucd
+sed 500q data/VS20MORT.DUSMCPUB_r20220105 | ./mortus.awk | stack exec ucd
 ```
 
 If the underlying cause selected by the software diverges from the one recorded
