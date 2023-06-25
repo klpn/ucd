@@ -25,6 +25,6 @@ sed 500q data/VS20MORT.DUSMCPUB_r20220105 | ./mortus.awk | stack exec ucd
 
 If the underlying cause selected by the software diverges from the one recorded
 in the data file, the two will be printed separated by |, with the one in the
-file first. Because the pipe character does not otherwise occur in the data,
-you may further pipe the output into `grep '|'` to filter out diverging
-records.
+file first. The pipe character does not otherwise occur in the data,
+and you may pipe the output further into `divprop.awk` to calculate the
+proportion of diverging records.
