@@ -28,6 +28,10 @@ ucmods = modCa . illDefCa . obvCa
 
 modCa :: (DeathCert, String) -> String
 modCa (dc, tuc)
+    | tuc =~ diabNos && length kidDiabs > 0 = modCa (dc, (take 3 tuc) ++ "2")
+    | tuc =~ orgNoVd && length neurDegs > 0 = modCa (dc, last neurDegs)
+    | tuc =~ alcoPs && length alcoLivs > 0 = modCa (dc, last alcoLivs)
+    | tuc =~ tobacco && length chResps > 0 = modCa (dc, last chResps)
     | tuc =~ rhdNos && length chrRhds > 0 = modCa (dc, last chrRhds)
     | tuc == ht && length hhds > 0 = modCa (dc, last hhds)
     | tuc == ht && length hkds > 0 = modCa (dc, last hkds)
@@ -40,10 +44,12 @@ modCa (dc, tuc)
     | tuc == ht && length kidContrs > 0 = modCa (dc, hkdOth)
     | tuc == hhdHf && length rfAlls > 0 = modCa (dc, hhkdHfRf)
     | tuc == hhdHf && length hkdOthkdills > 0 = modCa (dc, hhkdHfOth)
+    | tuc == hhdOth && length hfAlls > 0 = modCa (dc, hhdHf)
     | tuc == hhdOth && length rfAlls > 0 = modCa (dc, hhkdRfOth)
     | tuc == hhdOth && length hkdOthkdills > 0 = modCa (dc, hhkdOth)
     | tuc == hkdRf && length hfAlls > 0 = modCa (dc, hhkdHfRf)
     | tuc == hkdRf && length hhdOthhdills > 0 = modCa (dc, hhkdRfOth)
+    | tuc == hkdOth && length rfAlls > 0 = modCa (dc, hkdRf)
     | tuc == hkdOth && length hfAlls > 0 = modCa (dc, hhkdHfOth)
     | tuc == hkdOth && length hhdOthhdills > 0 = modCa (dc, hhkdOth)
     | tuc =~ htd && length ihds > 0 = modCa (dc, last ihds)
@@ -74,7 +80,15 @@ modCa (dc, tuc)
     | tuc == taaNoRup && length aaaNoRups > 0 = modCa (dc, taaaNoRup)
     | tuc == aaaRup && length taaRups > 0 = modCa (dc, taaaRup)
     | tuc == aaaNoRup && length taaNoRups > 0 = modCa (dc, taaaNoRup)
+    | tuc =~ cold && length imMobs > 0 = modCa (dc, hypoPneum)
+    | tuc =~ cold && length fluPneums > 0 = modCa (dc, last fluPneums)
+    | tuc =~ cold && length bronchitiss > 0 = modCa (dc, last bronchitiss)
+    | tuc =~ pneumOrgNos && length imMobs > 0 = modCa (dc, hypoPneum)
+    | tuc =~ othCopd && length pneums > 0 = modCa (dc, infCopd)
+    | tuc =~ renf && length hts > 0 = modCa (dc, hkdRf)
+    | tuc =~ renf && length hkds > 0 = modCa (dc, hkdRf)
     | tuc =~ inj && length exts > 0 = modCa (dc, last exts)
+    | tuc =~ alcoAcc && length drugAccs > 0 = modCa (dc, last drugAccs)
     | tuc =~ nos && length tucNonNoss > 0 = modCa (dc, last tucNonNoss)
     | otherwise = tuc
     where
@@ -82,8 +96,10 @@ modCa (dc, tuc)
         p2 = part2 dc 
         p12 = (concat p1) ++ p2
         p12tuca = fst $ break (== tuc) p12
+        neurDegs = filter (=~ neurDeg) p12
         chrRhds = filter (=~ chrRhd) p12
         htds = filter (=~ htd) p12
+        hts = filter (== ht) p12
         hhds = filter (=~ hhd) p12
         hkds = filter (=~ hkd) p12
         hhkds = filter (=~ hhkd) p12
@@ -109,10 +125,18 @@ modCa (dc, tuc)
         taaNoRups = filter (=~ taaNoRup) p12
         aaaRups = filter (=~ aaaRup) p12
         aaaNoRups = filter (=~ aaaNoRup) p12
-        rfAlls = filter (=~ rfAll) p12
+        fluPneums = filter (=~ fluPneum) p12
+        pneums = filter (=~ pneum) p12
+        bronchitiss = filter (=~ bronchitis) p12
+        chResps = filter (=~ chResp) p12
+        alcoLivs = filter (=~ alcoLiv) p12
         scols = filter (=~ scol) p12
+        rfAlls = filter (=~ rfAll) p12
+        kidDiabs = filter (=~ kidDiab) p12
         gangrNoss = filter (=~ gangrNos) p12
+        imMobs = filter (== imMob) p12
         exts = filter (=~ ext) p12
+        drugAccs = filter (=~ drugAcc) p12
         tucNonNoss = filter (=~ (take 3 tuc ++ "[0-8]")) p12
         vdemTucas = filter (=~ vdem) p12tuca
         demNosTucas = filter (=~ demNos) p12tuca
@@ -146,6 +170,7 @@ obvCa :: (DeathCert, String) -> (DeathCert, String)
 obvCa (dc, tuc) 
     | tuc =~ obvConsHiv && length hivs > 0 = obvCa (dc, last hivs)
     | tuc =~ pneum && length pcas > 0 = obvCa (dc, last pcas)
+    | tuc =~ hfHdNos && length othSpecHds > 0 = obvCa (dc, last othSpecHds)
     | otherwise = (dc, tuc)
     where
         p1 = part1 dc 
@@ -153,6 +178,7 @@ obvCa (dc, tuc)
         p12 = (snd $ break (== tuc) $ (concat p1) ++ p2)
         hivs = filter (=~ hiv) p12
         pcas = filter (=~ pneumObvCa) p12
+        othSpecHds = filter (=~ othSpecHd) p12
 
 startUcd :: [[String]] -> String
 startUcd p1
